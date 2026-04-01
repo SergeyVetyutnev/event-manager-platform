@@ -3,7 +3,6 @@ package dev.vetyutnev.eventmanagerplatform.location;
 import dev.vetyutnev.eventmanagerplatform.location.exception.LocationNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springdoc.webmvc.api.MultipleOpenApiWebMvcResource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,13 +16,13 @@ public class LocationService {
 
     private final LocationRepository locationRepository;
     private final LocationMapper locationMapper;
-    private final MultipleOpenApiWebMvcResource multipleOpenApiResource;
 
     @Transactional
     public Location create(Location locationDomain){
         log.info("Создание новой локации {}", locationDomain.name());
 
         var entity = locationMapper.toEntity(locationDomain);
+        entity.setId(null);
         var savedEntity = locationRepository.save(entity);
 
         return locationMapper.toDomain(savedEntity);
@@ -42,7 +41,8 @@ public class LocationService {
         return locationMapper.toDomain(entity);
     }
 
-    public Location update(Location locationDomain, Long id){
+    @Transactional
+    public Location update( Long id, Location locationDomain){
         log.info("Обновление локации с id: {}", id);
 
         var locationToUpdate = getEntityByIdOrThrow(id);

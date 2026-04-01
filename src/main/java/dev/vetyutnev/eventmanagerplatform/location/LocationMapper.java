@@ -1,6 +1,7 @@
 package dev.vetyutnev.eventmanagerplatform.location;
 
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.MappingConstants;
 import org.mapstruct.MappingTarget;
 
@@ -13,5 +14,6 @@ public interface LocationMapper {
     Location toDomain(LocationEntity entity);
     LocationEntity toEntity(Location domain);
 
+    @Mapping(target = "id", ignore = true)
     void updateEntityFromDto(Location domain, @MappingTarget LocationEntity entity);
 }
