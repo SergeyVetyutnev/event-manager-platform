@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -46,11 +47,14 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<ErrorMessageResponse> handleAllExceptions(Exception ex) {
-        log.error("Internal server error: ", ex);
+    public ResponseEntity<ErrorMessageResponse> handleAllExceptions(Exception e) {
+
+        String incidentId = UUID.randomUUID().toString();
+        log.error("Внутренняя ошибка сервера [Incident ID: {}]: ", incidentId, e);
+
         var response = new ErrorMessageResponse(
                 "Внутренняя ошибка сервера",
-                ex.getMessage(), // лучше использовать UUID
+                "ID ошибки: %s".formatted(incidentId),
                 LocalDateTime.now()
         );
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
