@@ -23,4 +23,7 @@ public class LocationEntity {
 
     @Column(nullable = false)
     private Integer capacity;
+
+    @Column
+    private String description;
 }

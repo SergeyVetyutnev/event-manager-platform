@@ -16,8 +16,10 @@ public record LocationDto(
     String address,
 
     @NotNull(message = "Вместимость локации должна быть указана")
-    @Min(value = 1, message = "Вместимость должна быть больше 0")
-    Integer capacity
+    @Min(value = 5, message = "Вместимость должна быть больше или равна 5")
+    Integer capacity,
+
+    String description
     ){
 
             }
