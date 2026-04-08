@@ -1,0 +1,29 @@
+package dev.vetyutnev.eventmanagerplatform.location;
+
+import jakarta.persistence.*;
+import lombok.*;
+
+@Entity
+@Table(name = "location")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+public class LocationEntity {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(nullable = false)
+    private String name;
+
+    @Column(nullable = false)
+    private String address;
+
+    @Column(nullable = false)
+    private Integer capacity;
+
+    @Column
+    private String description;
+}

@@ -1,0 +1,10 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/event_manager
+    username: postgres
+    password: postgres
+  liquibase:
+    change-log: classpath:db/changelog/changelog-master.yaml
+  jpa:
+    hibernate:
+      ddl-auto: none
