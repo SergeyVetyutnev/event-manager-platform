@@ -8,3 +8,7 @@ spring:
   jpa:
     hibernate:
       ddl-auto: none
+
+jwt:с
+  secret: ${JWT_SECRET:YmFzZTY0LWVuY29kZWQtc2VjcmV0LWtleS1tdXN0LWJlLWF0LWxlYXN0LTMyLWJ5dGVzLWxvbmc=}
+  ttl-millis: ${JWT_TTL:86400000}
