@@ -16,5 +16,7 @@ public interface UserMapper {
 
     User toDomain(UserEntity entity);
 
+    UserCredentials toDomain(UserCredentialsDto dto);
+
     UserDto toDto(User domain);
 }

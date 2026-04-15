@@ -2,6 +2,8 @@ package dev.vetyutnev.eventmanagerplatform.user;
 
 import dev.vetyutnev.eventmanagerplatform.location.exception.UserAlreadyExistsException;
 import dev.vetyutnev.eventmanagerplatform.location.exception.UserNotFoundException;
+import dev.vetyutnev.eventmanagerplatform.security.JwtService;
+import dev.vetyutnev.eventmanagerplatform.security.exception.InvalidCredentialException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -17,6 +19,7 @@ class UserService {
     private final UserRepository userRepository;
     private final UserMapper userMapper;
     private final PasswordEncoder passwordEncoder;
+    private final JwtService jwtService;
 
 
     public User register(User userDomain) {
@@ -39,6 +42,21 @@ class UserService {
         log.info("Пользователь {} успешно зарегистрирован", userEntity.getLogin());
 
         return userMapper.toDomain(userEntity);
+    }
+
+    public String login(UserCredentials credentials){
+        log.info("Попытка входа для пользователя: {}", credentials.login());
+
+        UserEntity entity = userRepository.findByLogin(credentials.login())
+                .orElseThrow(() -> new InvalidCredentialException("Неверный логин или пароль"));
+
+        if (!passwordEncoder.matches(credentials.password(), entity.getPasswordHash())){
+            log.warn("Неверный пароль для пользователя: {}", credentials.login());
+            throw new InvalidCredentialException("Неверный логин или пароль");
+        }
+
+        User userDomain = userMapper.toDomain(entity);
+        return jwtService.generateToken(userDomain);
     }
 
     public User getById(Long id) {

@@ -41,18 +41,12 @@ public class JwtService {
                 .compact();
     }
 
-    public String extractLogin(String token){
-        return extractClaim(token, Claims::getSubject);
-    }
-
-    public String extractRole(String token){
-        return extractClaim(token, claims -> claims.get("role", String.class));
-    }
-
-
-    private <T> T extractClaim(String token, Function<Claims, T> claimsResolver){
-        final Claims claims = extractAllClaims(token);
-        return claimsResolver.apply(claims);
+    public TokenPayload parseJwtToken(String token){
+        Claims claims = extractAllClaims(token);
+        return new TokenPayload(
+                claims.getSubject(),
+                claims.get("role", String.class)
+        );
     }
 
     private Claims extractAllClaims(String token) {
@@ -61,5 +55,10 @@ public class JwtService {
                 .build()
                 .parseSignedClaims(token)
                 .getPayload();
+    }
+
+    private <T> T extractClaim(String token, Function<Claims, T> claimsResolver){
+        final Claims claims = extractAllClaims(token);
+        return claimsResolver.apply(claims);
     }
 }

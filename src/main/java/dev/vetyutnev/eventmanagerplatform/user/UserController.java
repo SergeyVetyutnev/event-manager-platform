@@ -17,7 +17,7 @@ public class UserController {
     private final UserMapper userMapper;
 
     @PostMapping
-    public ResponseEntity<UserDto> register(@Valid @RequestBody UserRegistrationDto request){
+    public ResponseEntity<UserDto> register(@Valid @RequestBody UserRegistrationDto request) {
         log.info("HTTP запрос на регистрацию пользователя {}", request.login());
 
         var userDomain = userMapper.toDomainFromRegistration(request);
@@ -28,8 +28,21 @@ public class UserController {
                 .body(userMapper.toDto(createdUser));
     }
 
+    @PostMapping("/auth")
+    public ResponseEntity<JwtResponse> login(@Valid @RequestBody UserCredentialsDto request) {
+        log.info("HTTP запрос на авторизацию пользователя {}", request.login());
+
+        var userCredentials = userMapper.toDomain(request);
+
+        String token = userService.login(userCredentials);
+
+        return ResponseEntity.ok(new JwtResponse(token));
+
+
+    }
+
     @GetMapping("/{userId}")
-    public ResponseEntity<UserDto> getById(@PathVariable Long id){
+    public ResponseEntity<UserDto> getById(@PathVariable Long id) {
         log.info("HTTP запрос на получение пользователя с id {}", id);
 
         var userDomain = userService.getById(id);

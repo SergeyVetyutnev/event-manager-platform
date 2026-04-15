@@ -1,6 +1,7 @@
 package dev.vetyutnev.eventmanagerplatform.common.exception;
 
 import dev.vetyutnev.eventmanagerplatform.location.exception.LocationNotFoundException;
+import dev.vetyutnev.eventmanagerplatform.security.exception.InvalidCredentialException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -44,6 +45,18 @@ public class GlobalExceptionHandler {
         );
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+    }
+
+    @ExceptionHandler(InvalidCredentialException.class)
+    public ResponseEntity<ErrorMessageResponse>
+    handleInvalidCredentialException(InvalidCredentialException e){
+        log.warn("Auth error: {}", e.getMessage());
+        var response = new ErrorMessageResponse(
+                "необходима аутентификация",
+                e.getMessage(),
+                LocalDateTime.now()
+        );
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
     }
 
     @ExceptionHandler(Exception.class)
