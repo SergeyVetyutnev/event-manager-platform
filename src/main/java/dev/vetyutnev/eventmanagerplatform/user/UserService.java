@@ -14,7 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 @Slf4j
 @Transactional(readOnly = true)
-class UserService {
+public class UserService {
 
     private final UserRepository userRepository;
     private final UserMapper userMapper;
@@ -22,6 +22,7 @@ class UserService {
     private final JwtService jwtService;
 
 
+    @Transactional
     public User register(User userDomain) {
         log.info("Попытка регистрации пользователя с логином: {}", userDomain.login());
 
@@ -57,6 +58,24 @@ class UserService {
 
         User userDomain = userMapper.toDomain(entity);
         return jwtService.generateToken(userDomain);
+    }
+
+    @Transactional
+    public void createAdmin(User adminDomain){
+        if (userRepository.existsByLogin(adminDomain.login())){
+            log.debug("Системный администратор '{}' уже существует, пропускаем создание.", adminDomain.login());
+            return;
+        }
+
+        User admin = User.builder()
+                .login(adminDomain.login())
+                .passwordHash(passwordEncoder.encode(adminDomain.passwordHash()))
+                .age(adminDomain.age())
+                .role(UserRole.ADMIN)
+                .build();
+
+        userRepository.save(userMapper.toEntity(admin));
+        log.info("Системный администратор '{}' успешно создан!", admin.login());
     }
 
     public User getById(Long id) {

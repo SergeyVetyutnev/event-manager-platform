@@ -42,7 +42,7 @@ public class SecurityConfig {
                 )
                 .authorizeHttpRequests(auth -> auth
                         //swagger
-                        .requestMatchers("swager-ui/**", "v3/api-docs/**").permitAll()
+                        .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
                         //reg auth
                         .requestMatchers(HttpMethod.POST, "/users", "/users/auth").permitAll()
 

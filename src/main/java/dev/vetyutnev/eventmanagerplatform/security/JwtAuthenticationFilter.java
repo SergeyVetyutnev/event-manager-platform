@@ -43,11 +43,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 var authentication = new UsernamePasswordAuthenticationToken(
                         payload.login(),
                         null,
-                        List.of(new SimpleGrantedAuthority("Role_" + payload.role()))
+                        List.of(new SimpleGrantedAuthority("ROLE_" + payload.role()))
                 );
 
                 SecurityContextHolder.getContext().setAuthentication(authentication);
-                log.debug("Аутентификация успешна для пользователя: {}", payload.login());
+                log.debug("Успешная аутентификация для пользователя: {}, его права: {}",
+                        payload.login(), authentication.getAuthorities());
             }
         } catch (Exception e) {
             log.warn("Ошибка валидации JWT: {}", e.getMessage());

@@ -1,5 +1,6 @@
 package dev.vetyutnev.eventmanagerplatform.security;
 
+import dev.vetyutnev.eventmanagerplatform.security.config.JwtProperties;
 import dev.vetyutnev.eventmanagerplatform.user.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -20,13 +21,10 @@ public class JwtService {
     private final SecretKey signingKey;
     private final long ttlMillis;
 
-    public JwtService(
-            @Value("${jwt.secret}") String secret,
-            @Value("${jwt.ttl-millis}") long ttlMillis
-    ) {
-        byte[] keyBytes = Decoders.BASE64.decode(secret);
+    public JwtService(JwtProperties jwtProperties) {
+        byte[] keyBytes = Decoders.BASE64.decode(jwtProperties.secret());
         this.signingKey = Keys.hmacShaKeyFor(keyBytes);
-        this.ttlMillis = ttlMillis;
+        this.ttlMillis = jwtProperties.ttlMillis();
     }
 
     public String generateToken(User user){

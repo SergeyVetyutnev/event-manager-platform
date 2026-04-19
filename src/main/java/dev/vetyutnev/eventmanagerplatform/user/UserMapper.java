@@ -9,7 +9,7 @@ public interface UserMapper {
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "role", ignore = true)
-    @Mapping(source = "password", target = "password_hash")
+    @Mapping(source = "password", target = "passwordHash")
     public User toDomainFromRegistration(UserRegistrationDto registrationDto);
 
     UserEntity toEntity(User domain);
