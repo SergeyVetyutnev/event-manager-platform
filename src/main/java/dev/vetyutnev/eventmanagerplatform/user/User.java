@@ -6,7 +6,7 @@ import lombok.Builder;
 public record User (
         Long id,
         String login,
-        String passwordHash,
+        String password,
         Integer age,
         UserRole role
 )

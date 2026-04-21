@@ -33,6 +33,7 @@ public class JwtService {
         return Jwts.builder()
                 .subject(user.login())
                 .claim("role", user.role().name())
+                .claim("userId", user.id())
                 .issuedAt(new Date())
                 .expiration(new Date(System.currentTimeMillis() + ttlMillis))
                 .signWith(signingKey)
@@ -42,6 +43,7 @@ public class JwtService {
     public TokenPayload parseJwtToken(String token){
         Claims claims = extractAllClaims(token);
         return new TokenPayload(
+                claims.get("userId", Long.class),
                 claims.getSubject(),
                 claims.get("role", String.class)
         );

@@ -1,6 +1,7 @@
 package dev.vetyutnev.eventmanagerplatform.common.exception;
 
 import dev.vetyutnev.eventmanagerplatform.location.exception.LocationNotFoundException;
+import dev.vetyutnev.eventmanagerplatform.location.exception.UserNotFoundException;
 import dev.vetyutnev.eventmanagerplatform.security.exception.InvalidCredentialException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -19,6 +20,19 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(LocationNotFoundException.class)
     public ResponseEntity<ErrorMessageResponse> handleNotFoundException(LocationNotFoundException e){
+        log.warn("Not found error: {}", e.getMessage());
+
+        var response = new ErrorMessageResponse(
+                "Сущность не найдена",
+                e.getMessage(),
+                LocalDateTime.now()
+        );
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+    }
+
+    @ExceptionHandler(UserNotFoundException.class)
+    public ResponseEntity<ErrorMessageResponse> handleNotFoundException(UserNotFoundException e){
         log.warn("Not found error: {}", e.getMessage());
 
         var response = new ErrorMessageResponse(

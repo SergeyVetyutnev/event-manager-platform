@@ -42,10 +42,10 @@ public class UserController {
     }
 
     @GetMapping("/{userId}")
-    public ResponseEntity<UserDto> getById(@PathVariable Long id) {
-        log.info("HTTP запрос на получение пользователя с id {}", id);
+    public ResponseEntity<UserDto> getById(@PathVariable Long userId) {
+        log.info("HTTP запрос на получение пользователя с id {}", userId);
 
-        var userDomain = userService.getById(id);
+        var userDomain = userService.getById(userId);
 
         return ResponseEntity.ok(userMapper.toDto(userDomain));
     }

@@ -22,7 +22,7 @@ public class DefaultAdminInitializer {
 
         User adminDomain = User.builder()
                 .login(adminProperties.login())
-                .passwordHash(adminProperties.password())
+                .password(adminProperties.password())
                 .age(adminProperties.age())
                 .build();
 

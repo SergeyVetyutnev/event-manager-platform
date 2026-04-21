@@ -35,7 +35,7 @@ public class UserService {
         var securedUser = User.builder()
                 .login(userDomain.login())
                 .age(userDomain.age())
-                .passwordHash(passwordEncoder.encode(userDomain.passwordHash()))
+                .password(passwordEncoder.encode(userDomain.password()))
                 .role(UserRole.USER)
                 .build();
 
@@ -69,7 +69,7 @@ public class UserService {
 
         User admin = User.builder()
                 .login(adminDomain.login())
-                .passwordHash(passwordEncoder.encode(adminDomain.passwordHash()))
+                .password(passwordEncoder.encode(adminDomain.password()))
                 .age(adminDomain.age())
                 .role(UserRole.ADMIN)
                 .build();
