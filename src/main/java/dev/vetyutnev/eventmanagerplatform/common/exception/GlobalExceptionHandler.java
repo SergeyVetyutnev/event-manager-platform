@@ -1,6 +1,8 @@
 package dev.vetyutnev.eventmanagerplatform.common.exception;
 
 import dev.vetyutnev.eventmanagerplatform.location.exception.LocationNotFoundException;
+import dev.vetyutnev.eventmanagerplatform.location.exception.UserNotFoundException;
+import dev.vetyutnev.eventmanagerplatform.security.exception.InvalidCredentialException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,6 +31,19 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
     }
 
+    @ExceptionHandler(UserNotFoundException.class)
+    public ResponseEntity<ErrorMessageResponse> handleNotFoundException(UserNotFoundException e){
+        log.warn("Not found error: {}", e.getMessage());
+
+        var response = new ErrorMessageResponse(
+                "Сущность не найдена",
+                e.getMessage(),
+                LocalDateTime.now()
+        );
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+    }
+
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ErrorMessageResponse> handleArgumentNotValidException(MethodArgumentNotValidException e){
         var detailedMessage = e.getBindingResult().getFieldErrors().stream()
@@ -44,6 +59,18 @@ public class GlobalExceptionHandler {
         );
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+    }
+
+    @ExceptionHandler(InvalidCredentialException.class)
+    public ResponseEntity<ErrorMessageResponse>
+    handleInvalidCredentialException(InvalidCredentialException e){
+        log.warn("Auth error: {}", e.getMessage());
+        var response = new ErrorMessageResponse(
+                "необходима аутентификация",
+                e.getMessage(),
+                LocalDateTime.now()
+        );
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
     }
 
     @ExceptionHandler(Exception.class)
