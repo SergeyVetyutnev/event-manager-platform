@@ -8,9 +8,14 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface EventRepository extends JpaRepository<EventEntity, Long>, JpaSpecificationExecutor<EventEntity> {
+
+    Optional<EventEntity> findById(Long id);
+
+    List<EventEntity> findAllByOwnerId(Long ownerId);
 
     @Query(value = "SELECT id FROM event WHERE status = :status AND date <= CURRENT_TIMESTAMP",
             nativeQuery = true)
