@@ -1,9 +1,8 @@
 package dev.vetyutnev.eventmanagerplatform.event;
 
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
-import org.springframework.data.jpa.repository.Modifying;
-import org.springframework.data.jpa.repository.Query;
+import jakarta.persistence.LockModeType;
+import org.hibernate.dialect.lock.LockingStrategy;
+import org.springframework.data.jpa.repository.*;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
@@ -16,6 +15,10 @@ public interface EventRepository extends JpaRepository<EventEntity, Long>, JpaSp
     Optional<EventEntity> findById(Long id);
 
     List<EventEntity> findAllByOwnerId(Long ownerId);
+
+    @Lock(LockModeType.PESSIMISTIC_WRITE)
+    @Query("SELECT e FROM event WHERE e.id = :id")
+    Optional<EventEntity> findByIdWithLock(@Param("id") Long id);
 
     @Query(value = "SELECT id FROM event WHERE status = :status AND date <= CURRENT_TIMESTAMP",
             nativeQuery = true)
