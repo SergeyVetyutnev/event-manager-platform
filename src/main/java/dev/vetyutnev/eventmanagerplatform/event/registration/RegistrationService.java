@@ -1,11 +1,11 @@
-package dev.vetyutnev.eventmanagerplatform.registration;
+package dev.vetyutnev.eventmanagerplatform.event.registration;
 
 import dev.vetyutnev.eventmanagerplatform.event.Event;
 import dev.vetyutnev.eventmanagerplatform.event.EventMapper;
 import dev.vetyutnev.eventmanagerplatform.event.EventRepository;
 import dev.vetyutnev.eventmanagerplatform.event.EventStatus;
 import dev.vetyutnev.eventmanagerplatform.event.exception.EventNotFoundException;
-import dev.vetyutnev.eventmanagerplatform.registration.exception.RegistrationException;
+import dev.vetyutnev.eventmanagerplatform.event.registration.exception.RegistrationException;
 import dev.vetyutnev.eventmanagerplatform.security.TokenPayload;
 import dev.vetyutnev.eventmanagerplatform.user.UserRole;
 import lombok.RequiredArgsConstructor;

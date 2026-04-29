@@ -45,7 +45,7 @@ public class EventService {
         return eventMapper.toDomain(savedEntity);
     }
 
-    public Event getByID(Long id) {
+    public Event getById(Long id) {
         var entity = getEntityByIdOrThrow(id);
         return eventMapper.toDomain(entity);
     }

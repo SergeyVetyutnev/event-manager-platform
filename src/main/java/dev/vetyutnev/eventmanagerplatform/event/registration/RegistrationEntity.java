@@ -1,4 +1,4 @@
-package dev.vetyutnev.eventmanagerplatform.registration;
+package dev.vetyutnev.eventmanagerplatform.event.registration;
 
 import dev.vetyutnev.eventmanagerplatform.event.EventEntity;
 import jakarta.persistence.*;

@@ -1,6 +1,5 @@
-package dev.vetyutnev.eventmanagerplatform.registration;
+package dev.vetyutnev.eventmanagerplatform.event.registration;
 
-import dev.vetyutnev.eventmanagerplatform.event.Event;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

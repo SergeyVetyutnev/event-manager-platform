@@ -1,19 +1,22 @@
 package dev.vetyutnev.eventmanagerplatform.event;
 
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.MappingConstants;
-import org.mapstruct.MappingTarget;
+import org.jspecify.annotations.Nullable;
+import org.mapstruct.*;
 
-@Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
+@Mapper(
+        componentModel = MappingConstants.ComponentModel.SPRING,
+        unmappedTargetPolicy = ReportingPolicy.IGNORE
+)
 public interface EventMapper {
     EventEntity toEntity(Event domain);
 
     Event toDomain(EventEntity entity);
 
-    @Mapping(target = "id", ignore = true)
-    @Mapping(target = "ownerId", ignore = true)
-    @Mapping(target = "occupiedPlaces", ignore = true)
-    @Mapping(target = "status", ignore = true)
+    Event toDomain(EventCreateRequestDto requestDto);
+
+    Event toDomain(EventUpdateRequestDto requestDto);
+
     void updateEntityFromDomain(Event eventDomain, @MappingTarget EventEntity entity);
+
+    EventDto toDto(Event domain);
 }

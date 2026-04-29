@@ -1,6 +1,6 @@
 package dev.vetyutnev.eventmanagerplatform.event;
 
-import dev.vetyutnev.eventmanagerplatform.registration.RegistrationEntity;
+import dev.vetyutnev.eventmanagerplatform.event.registration.RegistrationEntity;
 import jakarta.persistence.*;
 import lombok.*;
 

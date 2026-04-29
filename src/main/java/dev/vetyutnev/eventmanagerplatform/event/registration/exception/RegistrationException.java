@@ -1,4 +1,4 @@
-package dev.vetyutnev.eventmanagerplatform.registration.exception;
+package dev.vetyutnev.eventmanagerplatform.event.registration.exception;
 
 public class RegistrationException extends RuntimeException {
     public RegistrationException(String message) {
