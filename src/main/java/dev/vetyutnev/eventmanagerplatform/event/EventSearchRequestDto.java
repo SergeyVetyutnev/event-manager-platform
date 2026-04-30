@@ -1,18 +1,18 @@
 package dev.vetyutnev.eventmanagerplatform.event;
 
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 
 public record EventSearchRequestDto(
         String name,
         Integer placesMin,
         Integer placesMax,
-        LocalDateTime dateStartAfter,
-        LocalDateTime dateStartBefore,
+        OffsetDateTime  dateStartAfter,
+        OffsetDateTime dateStartBefore,
         Integer costMin,
         Integer costMax,
         Integer durationMin,
         Integer durationMax,
         Long locationId,
-        EventStatus eventStatus
+        EventStatus status
 ) {
 }

@@ -2,7 +2,7 @@ package dev.vetyutnev.eventmanagerplatform.event;
 
 import lombok.Builder;
 
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 
 @Builder
 public record EventDto(
@@ -11,10 +11,10 @@ public record EventDto(
         Long ownerId,
         Integer maxPlaces,
         Integer occupiedPlaces,
-        LocalDateTime date,
+        OffsetDateTime date,
         Integer cost,
         Integer duration,
         Long locationId,
-        EventStatus eventStatus
+        EventStatus status
 ) {
 }

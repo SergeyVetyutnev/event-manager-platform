@@ -54,8 +54,8 @@ public class EventSpecification {
             if (filter.locationId() != null) {
                 predicates.add(cb.equal(root.get("locationId"), filter.locationId()));
             }
-            if (filter.eventStatus() != null) {
-                predicates.add(cb.equal(root.get("status"), filter.eventStatus()));
+            if (filter.status() != null) {
+                predicates.add(cb.equal(root.get("status"), filter.status()));
             }
 
             return cb.and(predicates.toArray(new Predicate[0]));

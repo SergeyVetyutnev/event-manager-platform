@@ -6,6 +6,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 
 public record EventUpdateRequestDto(
         @NotBlank(message = "Название мероприятия не может быть пустым")
@@ -17,7 +18,7 @@ public record EventUpdateRequestDto(
 
         @NotNull(message = "Дата обязательна")
         @Future(message = "Мероприятие должно быть в будущем")
-        LocalDateTime date,
+        OffsetDateTime date,
 
         @NotNull(message = "Стоимость обязательна")
         @Min(value = 1, message = "Стоимость должна быть больше 0")

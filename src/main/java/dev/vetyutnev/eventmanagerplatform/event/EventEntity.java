@@ -49,5 +49,6 @@ public class EventEntity {
     private EventStatus status;
 
     @OneToMany(mappedBy = "event", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Builder.Default
     private List<RegistrationEntity> registrations = new ArrayList<>();
 }

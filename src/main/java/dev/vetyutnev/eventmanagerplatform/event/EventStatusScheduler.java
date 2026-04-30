@@ -28,7 +28,7 @@ public class EventStatusScheduler {
 
         List<Long> toFinish = eventRepository.findEventsToFinish(EventStatus.STARTED.name());
         if (!toFinish.isEmpty()){
-            log.info("Планировщик: окончание {} мероприятий (IDs: {})", toStart.size(), toStart);
+            log.info("Планировщик: окончание {} мероприятий (IDs: {})", toFinish.size(), toFinish);
             eventRepository.changeStatus(toFinish, EventStatus.FINISHED);
         }
     }
