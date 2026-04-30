@@ -17,7 +17,7 @@ public interface EventRepository extends JpaRepository<EventEntity, Long>, JpaSp
     List<EventEntity> findAllByOwnerId(Long ownerId);
 
     @Lock(LockModeType.PESSIMISTIC_WRITE)
-    @Query("SELECT e FROM event WHERE e.id = :id")
+    @Query("SELECT e FROM EventEntity e WHERE e.id = :id")
     Optional<EventEntity> findByIdWithLock(@Param("id") Long id);
 
     @Query(value = "SELECT id FROM event WHERE status = :status AND date <= CURRENT_TIMESTAMP",
@@ -32,7 +32,7 @@ public interface EventRepository extends JpaRepository<EventEntity, Long>, JpaSp
     List<Long> findEventsToFinish(@Param("status") String status);
 
     @Modifying
-    @Query("UPDATE EventEntity e SET e.status = :newStatus WHERE e.id = :id")
-    void changeStatus(@Param("id") Long id, @Param("newStatus") EventStatus newStatus);
+    @Query("UPDATE EventEntity e SET e.status = :newStatus WHERE e.id IN :ids")
+    void changeStatus(@Param("ids") List<Long> ids, @Param("newStatus") EventStatus newStatus);
 
 }

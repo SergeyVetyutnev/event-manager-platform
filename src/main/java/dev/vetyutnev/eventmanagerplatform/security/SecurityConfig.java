@@ -31,7 +31,7 @@ public class SecurityConfig {
     }
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http, AuthenticationEntryPoint authenticationEntryPoint) throws Exception{
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
         return http
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(sm ->
@@ -59,27 +59,23 @@ public class SecurityConfig {
 
                         //registrations
                         .requestMatchers(HttpMethod.POST, "/events/registrations/{eventId}").hasRole("USER")
-                        .requestMatchers(HttpMethod.DELETE, "events/registrations/cancel/{eventId}").hasRole("USER")
-                        .requestMatchers(HttpMethod.GET, "events/registrations/my").hasRole("USER")
+                        .requestMatchers(HttpMethod.DELETE, "/events/registrations/cancel/{eventId}").hasRole("USER")
+                        .requestMatchers(HttpMethod.GET, "/events/registrations/my").hasRole("USER")
 
                         //events my
                         .requestMatchers(HttpMethod.POST, "/events").hasRole("USER")
-                        .requestMatchers(HttpMethod.GET, "events/my").hasRole("USER")
+                        .requestMatchers(HttpMethod.GET, "/events/my").hasRole("USER")
 
                         //events
-                        .requestMatchers(HttpMethod.POST, "events/search").hasAnyRole("ADMIN", "USER")
-                        .requestMatchers(HttpMethod.GET, "events/{eventId}").hasAnyRole("ADMIN", "USER")
+                        .requestMatchers(HttpMethod.POST, "/events/search").hasAnyRole("ADMIN", "USER")
+                        .requestMatchers(HttpMethod.GET, "/events/{eventId}").hasAnyRole("ADMIN", "USER")
                         .requestMatchers(HttpMethod.PUT, "/events/{eventId}").hasAnyRole("ADMIN", "USER")
                         .requestMatchers(HttpMethod.DELETE, "/events/{eventId}").hasAnyRole("ADMIN", "USER")
 
-
                         //other
                         .anyRequest().authenticated()
-
                 )
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
-
                 .build();
-
     }
 }
