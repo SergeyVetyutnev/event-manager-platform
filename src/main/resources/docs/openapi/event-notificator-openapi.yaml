@@ -148,7 +148,7 @@ components:
           - field: date
             oldValue: '2026-03-20T10:00:00Z'
             newValue: '2026-03-21T10:00:00Z'
-          - field: status
+          - field: eventStatus
             oldValue: WAIT_START
             newValue: CANCELLED
     NotificationPayload:
@@ -201,7 +201,7 @@ components:
         field:
           type: string
           description: Имя изменившегося поля мероприятия
-          example: status
+          example: eventStatus
         oldValue:
           nullable: true
           description: Старое значение поля
@@ -219,7 +219,7 @@ components:
           - type: number
           - type: boolean
       example:
-        field: status
+        field: eventStatus
         oldValue: WAIT_START
         newValue: CANCELLED
     ErrorMessageResponse:

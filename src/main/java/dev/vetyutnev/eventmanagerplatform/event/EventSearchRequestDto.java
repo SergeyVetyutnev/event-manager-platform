@@ -13,6 +13,6 @@ public record EventSearchRequestDto(
         Integer durationMin,
         Integer durationMax,
         Long locationId,
-        EventStatus status
+        EventStatus eventStatus
 ) {
 }
