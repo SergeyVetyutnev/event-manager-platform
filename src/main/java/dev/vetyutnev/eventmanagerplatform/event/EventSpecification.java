@@ -16,6 +16,12 @@ public class EventSpecification {
             if (filter.name() != null && !filter.name().isBlank()) {
                 predicates.add(cb.equal(root.get("name"), filter.name()));
             }
+//          поиск по подстроке
+//            if (filter.name() != null && !filter.name().isBlank()) {
+//                String pattern = "%" + filter.name().toLowerCase() + "%";
+//
+//                predicates.add(cb.like(cb.lower(root.get("name")), pattern));
+//            }
 
 
             //вместимость
@@ -55,7 +61,7 @@ public class EventSpecification {
                 predicates.add(cb.equal(root.get("locationId"), filter.locationId()));
             }
             if (filter.eventStatus() != null) {
-                predicates.add(cb.equal(root.get("eventStatus"), filter.eventStatus()));
+                predicates.add(cb.equal(root.get("status"), filter.eventStatus()));
             }
 
             return cb.and(predicates.toArray(new Predicate[0]));

@@ -8,6 +8,9 @@ spring:
   jpa:
     hibernate:
       ddl-auto: none
+  jackson:
+    deserialization:
+      fail-on-unknown-properties: true
 
 jwt:
   secret: ${JWT_SECRET:YmFzZTY0LWVuY29kZWQtc2VjcmV0LWtleS1tdXN0LWJlLWF0LWxlYXN0LTMyLWJ5dGVzLWxvbmc=}

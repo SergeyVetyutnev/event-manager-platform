@@ -10,6 +10,7 @@ import dev.vetyutnev.eventmanagerplatform.security.exception.InvalidCredentialEx
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -104,6 +105,18 @@ public class GlobalExceptionHandler {
         var response = new ErrorMessageResponse(
                 "Некорректный запрос",
                 ex.getMessage(),
+                LocalDateTime.now()
+        );
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+    }
+
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public ResponseEntity<ErrorMessageResponse> handleHttpMessageNotReadableException(HttpMessageNotReadableException ex) {
+        log.warn("Ошибка чтения JSON: {}", ex.getMessage());
+
+        var response = new ErrorMessageResponse(
+                "Некорректный запрос",
+                "Ошибка структуры JSON или передано неизвестное поле. Проверьте запрос.",
                 LocalDateTime.now()
         );
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
