@@ -37,7 +37,7 @@ public class EventController {
 
     @GetMapping("/{eventId}")
     public ResponseEntity<EventDto> getEventById(@PathVariable Long eventId){
-        log.info("HTTP GET /events/{} - получение мероприятия");
+        log.info("HTTP GET /events/{} - получение мероприятия", eventId);
 
         return ResponseEntity.ok(
                 eventMapper.toDto(

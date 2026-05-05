@@ -32,8 +32,6 @@ public class RegistrationService {
         log.info("Пользователь {} пытается зарегистрироваться на событие {}",
                 currentUser.userId(), eventId);
 
-        verifyUserRole(currentUser);
-
         var event = eventRepository.findByIdWithLock(eventId)
                 .orElseThrow(() -> new EventNotFoundException(
                         "Мероприятие с id %s не найдено".formatted(eventId)));
@@ -70,8 +68,6 @@ public class RegistrationService {
     public void cancelRegistration(Long eventId, TokenPayload currentUser){
         log.info("Пользователь {} отменяет регистрацию на мероприятие {}", currentUser.userId(), eventId);
 
-        verifyUserRole(currentUser);
-
         var registration = registrationRepository.findByEventIdAndUserId(eventId, currentUser.userId())
                 .orElseThrow(() -> new RegistrationException(
                         "Регистрация на мероприятие с id %s не найдена".formatted(eventId)));
@@ -95,18 +91,9 @@ public class RegistrationService {
     public List<Event> getMyRegistrations(TokenPayload currentUser){
         log.info("Запрос списка мероприятий, на которые записан пользователь {}", currentUser.userId());
 
-        verifyUserRole(currentUser);
-
-        return registrationRepository.findAllByUserId(currentUser.userId()).stream()
+        return registrationRepository.findAllWithEventByUserId(currentUser.userId()).stream()
                 .map(RegistrationEntity::getEvent)
                 .map(eventMapper::toDomain)
                 .toList();
-    }
-
-    private void verifyUserRole(TokenPayload currentUser){
-        if (!UserRole.USER.name().equals(currentUser.role())){
-            throw new RegistrationException(
-                    "Только пользователи с ролью USER могут регистрироваться на мероприятия");
-        }
     }
 }
