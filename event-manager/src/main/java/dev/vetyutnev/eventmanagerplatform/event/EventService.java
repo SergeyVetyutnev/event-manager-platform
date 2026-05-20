@@ -1,7 +1,12 @@
 package dev.vetyutnev.eventmanagerplatform.event;
 
+import dev.vetyutnev.eventmanagerplatform.common.kafka.ChangeItem;
+import dev.vetyutnev.eventmanagerplatform.common.kafka.EventChangeKafkaMessage;
+import dev.vetyutnev.eventmanagerplatform.common.utils.DiffUtils;
 import dev.vetyutnev.eventmanagerplatform.event.exception.EventNotFoundException;
 import dev.vetyutnev.eventmanagerplatform.event.exception.EventValidationException;
+import dev.vetyutnev.eventmanagerplatform.event.kafka.EventPublisherService;
+import dev.vetyutnev.eventmanagerplatform.event.registration.RegistrationRepository;
 import dev.vetyutnev.eventmanagerplatform.location.Location;
 import dev.vetyutnev.eventmanagerplatform.location.LocationService;
 import dev.vetyutnev.eventmanagerplatform.security.TokenPayload;
@@ -11,7 +16,9 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.OffsetDateTime;
 import java.util.List;
+import java.util.UUID;
 
 @Slf4j
 @Service
@@ -23,6 +30,8 @@ public class EventService {
     private final LocationService locationService;
     private final EventRepository eventRepository;
     private final EventPermissionService eventPermissionService;
+    private final RegistrationRepository registrationRepository;
+    private final EventPublisherService eventPublisherService;
 
     @Transactional
     public Event createEvent(Event eventDomain, TokenPayload currentUser) {
@@ -71,10 +80,33 @@ public class EventService {
                             .formatted(newLocation.capacity(), newDomain.maxPlaces()));
         }
 
-        eventMapper.updateEntityFromDomain(newDomain, existingEntity);
+        var oldEventDomain = eventMapper.toDomain(existingEntity);
 
-        var savedEntity = eventRepository.save(existingEntity);
-        return eventMapper.toDomain(savedEntity);
+        eventMapper.updateEntityFromDomain(newDomain, existingEntity);
+        var updatedEntity = eventRepository.save(existingEntity);
+
+        var newEventDomain = eventMapper.toDomain(updatedEntity);
+        List<ChangeItem> changes = DiffUtils.generateChanges(oldEventDomain, newEventDomain);
+
+        if (!changes.isEmpty()){
+            List<Long> subscribers = registrationRepository.findUserIdsByEventId(eventId);
+
+            var message = EventChangeKafkaMessage.builder()
+                    .messageId(UUID.randomUUID())
+                    .eventType("EVENT_UPDATED")
+                    .eventId(eventId)
+                    .occurredAt(OffsetDateTime.now())
+                    .ownerId(updatedEntity.getOwnerId())
+                    .changedById(currentUser.userId())
+                    .eventName(updatedEntity.getName())
+                    .subscribers(subscribers)
+                    .changes(changes)
+                    .build();
+
+            eventPublisherService.publishEventChange(message);
+        }
+
+        return newEventDomain;
     }
 
     @Transactional
@@ -90,8 +122,32 @@ public class EventService {
                     .formatted(existingEntity.getStatus()));
         }
 
+        String oldStatus = existingEntity.getStatus().name();
+
         existingEntity.setStatus(EventStatus.CANCELLED);
         eventRepository.save(existingEntity);
+
+        var changeItem = ChangeItem.builder()
+                .field("status")
+                .oldValue(oldStatus)
+                .newValue(existingEntity.getStatus().name())
+                .build();
+
+        List<Long> subscribers = registrationRepository.findUserIdsByEventId(eventId);
+
+        var message = EventChangeKafkaMessage.builder()
+                .messageId(UUID.randomUUID())
+                .eventType("EVENT_CANCELLED")
+                .eventId(eventId)
+                .occurredAt(OffsetDateTime.now())
+                .ownerId(existingEntity.getOwnerId())
+                .changedById(currentUser.userId())
+                .eventName(existingEntity.getName())
+                .subscribers(subscribers)
+                .changes(List.of(changeItem))
+                .build();
+
+        eventPublisherService.publishEventChange(message);
     }
 
     //TODO: пагниация
@@ -105,7 +161,7 @@ public class EventService {
                 .toList();
     }
 
-    public List<Event> getMyEvents(TokenPayload currentUser){
+    public List<Event> getMyEvents(TokenPayload currentUser) {
         log.info("Запрос мероприятий пользователя с id: {}", currentUser.userId());
 
         return eventRepository.findAllByOwnerId(currentUser.userId()).stream()
