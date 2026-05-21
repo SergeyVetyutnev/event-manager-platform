@@ -14,6 +14,8 @@ public interface EventRepository extends JpaRepository<EventEntity, Long>, JpaSp
 
     Optional<EventEntity> findById(Long id);
 
+    List<EventEntity> findAllById(Long id);
+
     List<EventEntity> findAllByOwnerId(Long ownerId);
 
     @Lock(LockModeType.PESSIMISTIC_WRITE)
