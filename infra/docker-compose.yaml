@@ -11,3 +11,4 @@ services:
     restart: unless-stopped
     volumes:
       - ./postgres_data:/var/lib/postgresql/data
+      - ./postgres-init/01-create-databases.sql:/docker-entrypoint-initdb.d/01-create-databases.sql
