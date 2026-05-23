@@ -24,6 +24,7 @@ spring:
       value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
     properties:
       spring.json.trusted.packages: "*"
-  jwt:
-    secret: ${JWT_SECRET:YmFzZTY0LWVuY29kZWQtc2VjcmV0LWtleS1tdXN0LWJlLWF0LWxlYXN0LTMyLWJ5dGVzLWxvbmc=}
-    ttl-millis: ${JWT_TTL:86400000}
+
+jwt:
+  secret: ${JWT_SECRET:YmFzZTY0LWVuY29kZWQtc2VjcmV0LWtleS1tdXN0LWJlLWF0LWxlYXN0LTMyLWJ5dGVzLWxvbmc=}
+  ttl-millis: ${JWT_TTL:86400000}
