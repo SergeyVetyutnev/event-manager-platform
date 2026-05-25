@@ -1,4 +1,4 @@
-package dev.vetyutnev.eventmanagerplatform.security;
+package dev.vetyutnev.eventmanagerplatform.common.security;
 
 public record TokenPayload(
         Long userId,

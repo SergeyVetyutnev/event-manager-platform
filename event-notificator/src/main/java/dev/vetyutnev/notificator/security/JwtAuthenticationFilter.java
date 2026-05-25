@@ -1,4 +1,4 @@
-package dev.vetyutnev.eventmanagerplatform.security;
+package dev.vetyutnev.notificator.security;
 
 import dev.vetyutnev.eventmanagerplatform.common.security.TokenPayload;
 import jakarta.servlet.FilterChain;

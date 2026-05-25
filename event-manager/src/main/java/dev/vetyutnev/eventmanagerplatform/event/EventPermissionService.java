@@ -1,7 +1,7 @@
 package dev.vetyutnev.eventmanagerplatform.event;
 
 import dev.vetyutnev.eventmanagerplatform.event.exception.EventAccessDeniedException;
-import dev.vetyutnev.eventmanagerplatform.security.TokenPayload;
+import dev.vetyutnev.eventmanagerplatform.common.security.TokenPayload;
 import dev.vetyutnev.eventmanagerplatform.user.UserRole;
 import org.springframework.stereotype.Service;
 

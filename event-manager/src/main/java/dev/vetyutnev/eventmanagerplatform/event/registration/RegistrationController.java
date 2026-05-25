@@ -2,7 +2,7 @@ package dev.vetyutnev.eventmanagerplatform.event.registration;
 
 import dev.vetyutnev.eventmanagerplatform.event.EventDto;
 import dev.vetyutnev.eventmanagerplatform.event.EventMapper;
-import dev.vetyutnev.eventmanagerplatform.security.TokenPayload;
+import dev.vetyutnev.eventmanagerplatform.common.security.TokenPayload;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;

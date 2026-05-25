@@ -9,7 +9,7 @@ import dev.vetyutnev.eventmanagerplatform.event.kafka.EventPublisherService;
 import dev.vetyutnev.eventmanagerplatform.event.registration.RegistrationRepository;
 import dev.vetyutnev.eventmanagerplatform.location.Location;
 import dev.vetyutnev.eventmanagerplatform.location.LocationService;
-import dev.vetyutnev.eventmanagerplatform.security.TokenPayload;
+import dev.vetyutnev.eventmanagerplatform.common.security.TokenPayload;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.jpa.domain.Specification;

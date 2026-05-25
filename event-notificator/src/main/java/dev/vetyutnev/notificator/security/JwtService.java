@@ -1,8 +1,8 @@
-package dev.vetyutnev.eventmanagerplatform.security;
+package dev.vetyutnev.notificator.security;
+
 
 import dev.vetyutnev.eventmanagerplatform.common.security.TokenPayload;
-import dev.vetyutnev.eventmanagerplatform.security.config.JwtProperties;
-import dev.vetyutnev.eventmanagerplatform.user.User;
+import dev.vetyutnev.notificator.security.config.JwtProperties;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
@@ -11,7 +11,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.crypto.SecretKey;
-import java.util.Date;
 import java.util.function.Function;
 
 @Slf4j
@@ -19,25 +18,10 @@ import java.util.function.Function;
 public class JwtService {
 
     private final SecretKey signingKey;
-    private final long ttlMillis;
 
     public JwtService(JwtProperties jwtProperties) {
         byte[] keyBytes = Decoders.BASE64.decode(jwtProperties.secret());
         this.signingKey = Keys.hmacShaKeyFor(keyBytes);
-        this.ttlMillis = jwtProperties.ttlMillis();
-    }
-
-    public String generateToken(User user){
-        log.debug("Генерация JWT токена для пользователя {}", user.login());
-
-        return Jwts.builder()
-                .subject(user.login())
-                .claim("role", user.role().name())
-                .claim("userId", user.id())
-                .issuedAt(new Date())
-                .expiration(new Date(System.currentTimeMillis() + ttlMillis))
-                .signWith(signingKey)
-                .compact();
     }
 
     public TokenPayload parseJwtToken(String token){
