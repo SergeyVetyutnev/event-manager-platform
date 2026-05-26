@@ -28,3 +28,8 @@ spring:
 jwt:
   secret: ${JWT_SECRET:YmFzZTY0LWVuY29kZWQtc2VjcmV0LWtleS1tdXN0LWJlLWF0LWxlYXN0LTMyLWJ5dGVzLWxvbmc=}
   ttl-millis: ${JWT_TTL:86400000}
+
+app:
+  kafka:
+    topics:
+      event-changes: "event-manager.events.changes.v1"

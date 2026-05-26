@@ -22,7 +22,7 @@ public class NotificationEntity {
     private Long userId;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "payload_id")
+    @JoinColumn(name = "payload_id", nullable = false)
     private NotificationEventPayloadEntity payload;
 
     @Column(name = "is_read", nullable = false)

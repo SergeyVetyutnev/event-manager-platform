@@ -26,7 +26,7 @@ public class NotificationEventPayloadEntity {
     private String eventType;
 
     @Column(name = "event_id", nullable = false)
-    private Long eventID;
+    private Long eventId;
 
     @Column(name = "occurred_at", nullable = false)
     private OffsetDateTime occurredAt;
