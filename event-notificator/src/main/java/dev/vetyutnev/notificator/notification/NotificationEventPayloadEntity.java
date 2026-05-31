@@ -37,6 +37,9 @@ public class NotificationEventPayloadEntity {
     @Column(name = "owner_id", nullable = false)
     private Long ownerId;
 
+    @Column(name = "event_name", nullable = false)
+    private String eventName;
+
     @Column(name = "payload_json", nullable = false, columnDefinition = "jsonb")
     private String payloadJson;
 }

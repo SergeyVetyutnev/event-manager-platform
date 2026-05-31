@@ -19,6 +19,11 @@ public interface EventMapper {
 
     Event toDomain(EventUpdateRequestDto requestDto);
 
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "ownerId", ignore = true)
+    @Mapping(target = "occupiedPlaces", ignore = true)
+    @Mapping(target = "status", ignore = true)
+    @Mapping(target = "registrations", ignore = true)
     void updateEntityFromDomain(Event eventDomain, @MappingTarget EventEntity entity);
 
     EventDto toDto(Event domain);

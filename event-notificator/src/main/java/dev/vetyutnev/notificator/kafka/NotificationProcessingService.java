@@ -45,6 +45,7 @@ public class NotificationProcessingService {
                 .occurredAt(message.occurredAt())
                 .changedById(message.changedById())
                 .ownerId(message.ownerId())
+                .eventName(message.eventName())
                 .payloadJson(payloadJson)
                 .build();
 

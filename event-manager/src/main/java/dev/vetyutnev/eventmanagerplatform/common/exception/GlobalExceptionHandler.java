@@ -5,6 +5,7 @@ import dev.vetyutnev.eventmanagerplatform.event.exception.EventNotFoundException
 import dev.vetyutnev.eventmanagerplatform.event.exception.EventValidationException;
 import dev.vetyutnev.eventmanagerplatform.event.registration.exception.RegistrationException;
 import dev.vetyutnev.eventmanagerplatform.location.exception.LocationNotFoundException;
+import dev.vetyutnev.eventmanagerplatform.location.exception.UserAlreadyExistsException;
 import dev.vetyutnev.eventmanagerplatform.location.exception.UserNotFoundException;
 import dev.vetyutnev.eventmanagerplatform.security.exception.InvalidCredentialException;
 import lombok.extern.slf4j.Slf4j;
@@ -47,6 +48,19 @@ public class GlobalExceptionHandler {
         );
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+    }
+
+    @ExceptionHandler(UserAlreadyExistsException.class)
+    public ResponseEntity<ErrorMessageResponse> handleUserAlreadyExistsException(UserAlreadyExistsException e){
+        log.warn("Ошибка регистрации пользователя: {}", e.getMessage());
+
+        var response = new ErrorMessageResponse(
+                "Ошибка регистрации пользователя",
+                e.getMessage(),
+                LocalDateTime.now()
+        );
+
+        return ResponseEntity.status((HttpStatus.BAD_REQUEST)).body(response);
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)

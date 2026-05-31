@@ -26,7 +26,7 @@ public class NotificationEntity {
     private NotificationEventPayloadEntity payload;
 
     @Column(name = "is_read", nullable = false)
-    private Boolean isRead;
+    private boolean isRead;
 
     @Column(name = "created_at", nullable = false)
     private OffsetDateTime createdAt;
