@@ -4,7 +4,7 @@ import dev.vetyutnev.eventmanagerplatform.event.registration.RegistrationEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,7 +33,7 @@ public class EventEntity {
     private Integer occupiedPlaces;
 
     @Column(nullable = false)
-    private LocalDateTime date;
+    private OffsetDateTime date;
 
     @Column(nullable = false)
     private Integer cost;

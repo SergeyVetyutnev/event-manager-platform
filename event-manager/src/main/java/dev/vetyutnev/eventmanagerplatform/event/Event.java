@@ -1,6 +1,6 @@
 package dev.vetyutnev.eventmanagerplatform.event;
 
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 
 public record Event(
         Long id,
@@ -8,7 +8,7 @@ public record Event(
         Long ownerId,
         Integer maxPlaces,
         Integer occupiedPlaces,
-        LocalDateTime date,
+        OffsetDateTime date,
         Integer cost,
         Integer duration,
         Long locationId,

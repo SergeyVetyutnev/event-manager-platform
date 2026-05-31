@@ -27,18 +27,4 @@ public interface EventMapper {
     void updateEntityFromDomain(Event eventDomain, @MappingTarget EventEntity entity);
 
     EventDto toDto(Event domain);
-
-    default LocalDateTime map(java.time.OffsetDateTime offsetDateTime){
-        if (offsetDateTime == null){
-            return null;
-        }
-        return offsetDateTime.toLocalDateTime();
-    }
-
-    default OffsetDateTime map(LocalDateTime localDateTime){
-        if (localDateTime == null){
-            return null;
-        }
-        return localDateTime.atOffset(java.time.ZoneOffset.UTC);
-    }
 }

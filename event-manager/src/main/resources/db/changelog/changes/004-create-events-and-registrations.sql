@@ -8,7 +8,7 @@ CREATE TABLE event (
     owner_id BIGINT NOT NULL,
     max_places INT NOT NULL CHECK (max_places >= 1),
     occupied_places INT NOT NULL DEFAULT 0 CHECK (occupied_places >= 0 AND occupied_places <= max_places),
-    date TIMESTAMP NOT NULL,
+    date TIMESTAMP WITH TIME ZONE NOT NULL,
     cost INT NOT NULL CHECK (cost > 0),
     duration INT NOT NULL CHECK (duration > 0),
     location_id BIGINT NOT NULL,
