@@ -2,6 +2,8 @@ package dev.vetyutnev.notificator.notification;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 
 import java.time.OffsetDateTime;
 import java.util.UUID;
@@ -40,6 +42,7 @@ public class NotificationEventPayloadEntity {
     @Column(name = "event_name", nullable = false)
     private String eventName;
 
+    @JdbcTypeCode(SqlTypes.JSON)
     @Column(name = "payload_json", nullable = false, columnDefinition = "jsonb")
     private String payloadJson;
 }
