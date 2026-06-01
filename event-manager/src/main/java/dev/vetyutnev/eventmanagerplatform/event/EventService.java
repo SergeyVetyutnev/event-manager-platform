@@ -72,6 +72,12 @@ public class EventService {
                     "Новое количество мест (%s)  не может быть меньше занятых мест (%s)"
                             .formatted(newDomain.maxPlaces(), existingEntity.getOccupiedPlaces()));
         }
+        if (existingEntity.getStatus() != EventStatus.WAIT_START){
+            throw new EventValidationException(
+                    "Редактирование невозможно. Текущий статус мероприятия: %s"
+                            .formatted(existingEntity.getStatus())
+            );
+        }
 
         var newLocation = locationService.getLocationById(newDomain.locationId());
         if (newLocation.capacity() < newDomain.maxPlaces()) {
@@ -150,7 +156,7 @@ public class EventService {
         eventPublisherService.publishEventChange(message);
     }
 
-    //TODO: пагниация
+    //TODO: пагинация
     public List<Event> searchEvents(EventSearchRequestDto filter) {
         log.info("Поиск мероприятий по фильтру");
 
