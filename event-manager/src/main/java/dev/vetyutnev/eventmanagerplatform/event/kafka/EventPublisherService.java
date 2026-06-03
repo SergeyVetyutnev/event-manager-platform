@@ -12,8 +12,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class EventPublisherService {
 
-    @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
-    private final KafkaTemplate<String, EventChangeKafkaMessage> kafkaTemplate;
+    private final KafkaTemplate<Object, Object> kafkaTemplate;
 
     @Value("${app.kafka.topics.event-changes}")
     private String topicName;
