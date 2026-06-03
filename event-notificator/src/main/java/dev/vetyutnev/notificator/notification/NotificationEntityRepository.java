@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.time.OffsetDateTime;
 import java.util.List;
 
 public interface NotificationEntityRepository extends JpaRepository<NotificationEntity, Long> {
@@ -20,4 +21,8 @@ public interface NotificationEntityRepository extends JpaRepository<Notification
             WHERE n.id IN :ids AND n.userId = :userId
             """)
     void markAsRead(@Param("ids") List<Long> notificationIds, @Param("userId") Long userId);
+
+    @Modifying(clearAutomatically = true, flushAutomatically = true)
+    @Query("DELETE FROM NotificationEntity n WHERE n.createdAt < :cutoffDate")
+    int deleteOldNotifications(@Param("cutoffDate")OffsetDateTime dateTime);
 }
