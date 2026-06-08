@@ -9,6 +9,6 @@ public record NotificationResponseDto(
         OffsetDateTime createdAt,
         Boolean isRead,
         String message,
-        NotificationPayloadDto payloadDto
+        NotificationPayloadDto payload
 ) {
 }

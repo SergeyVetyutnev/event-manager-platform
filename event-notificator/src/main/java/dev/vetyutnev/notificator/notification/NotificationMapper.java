@@ -7,7 +7,6 @@ import org.mapstruct.MappingConstants;
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
 public interface NotificationMapper {
 
-    @Mapping(target = "payloadDto", source = "payload")
     @Mapping(target = "notificationId", source = "id")
     NotificationResponseDto toDto(Notification domain);
 }

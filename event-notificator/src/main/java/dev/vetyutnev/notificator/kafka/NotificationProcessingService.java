@@ -10,6 +10,7 @@ import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import tools.jackson.core.JacksonException;
 import tools.jackson.databind.ObjectMapper;
 
 
@@ -28,7 +29,6 @@ public class NotificationProcessingService {
     private final NotificationEntityRepository notificationEntityRepository;
 
     @Transactional
-    @SneakyThrows
     public void processMessage(EventChangeKafkaMessage message){
 
         if (notificationEventPayloadRepository.existsByMessageId(message.messageId())){
@@ -36,7 +36,14 @@ public class NotificationProcessingService {
             return;
         }
 
-        String payloadJson = objectMapper.writeValueAsString(message.changes());
+        String payloadJson;
+        try {
+            payloadJson = objectMapper.writeValueAsString(message.changes());
+        } catch (JacksonException e) {
+            log.error("Ошибка сериализации payload для messageId {}",
+                    message.messageId(), e);
+            throw new RuntimeException("Не удалось сериализовать изменения для Kafka сообщения", e);
+        }
 
         var notificationEventPayloadEntity = NotificationEventPayloadEntity.builder()
                 .messageId(message.messageId())
