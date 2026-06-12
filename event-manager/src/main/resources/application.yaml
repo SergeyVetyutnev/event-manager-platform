@@ -1,0 +1,35 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/event_manager
+    username: postgres
+    password: postgres
+  liquibase:
+    change-log: classpath:db/changelog/changelog-master.yaml
+  jpa:
+    hibernate:
+      ddl-auto: none
+  jackson:
+    deserialization:
+      fail-on-unknown-properties: true
+  kafka:
+    bootstrap-servers: localhost:9092
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      properties:
+        spring.json.add.type.headers: false
+
+jwt:
+  secret: ${JWT_SECRET:YmFzZTY0LWVuY29kZWQtc2VjcmV0LWtleS1tdXN0LWJlLWF0LWxlYXN0LTMyLWJ5dGVzLWxvbmc=}
+  ttl-millis: ${JWT_TTL:86400000}
+
+app:
+  default-admin:
+    login: ${ADMIN_LOGIN:admin}
+    password: ${ADMIN_PASSWORD:admin}
+    age: 30
+  scheduling:
+    check-statuses-cron: "0 * * * * *"
+  kafka:
+    topics:
+      event-changes: "event-manager.events.changes.v1"

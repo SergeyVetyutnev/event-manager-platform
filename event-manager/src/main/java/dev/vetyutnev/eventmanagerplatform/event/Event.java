@@ -1,0 +1,17 @@
+package dev.vetyutnev.eventmanagerplatform.event;
+
+import java.time.OffsetDateTime;
+
+public record Event(
+        Long id,
+        String name,
+        Long ownerId,
+        Integer maxPlaces,
+        Integer occupiedPlaces,
+        OffsetDateTime date,
+        Integer cost,
+        Integer duration,
+        Long locationId,
+        EventStatus status
+) {
+}
