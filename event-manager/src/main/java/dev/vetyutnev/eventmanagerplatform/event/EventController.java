@@ -74,6 +74,7 @@ public class EventController {
         return ResponseEntity.noContent().build();
     }
 
+    //TODO: стоит переделать на GET с query параметрами
     @PostMapping("/search")
     public ResponseEntity<List<EventDto>> searchEvents(@RequestBody EventSearchRequestDto request){
         log.info("HTTP POST /events/search - поиск мероприятий");
