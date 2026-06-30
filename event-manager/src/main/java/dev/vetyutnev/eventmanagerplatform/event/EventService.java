@@ -12,6 +12,9 @@ import dev.vetyutnev.eventmanagerplatform.location.LocationService;
 import dev.vetyutnev.eventmanagerplatform.common.security.TokenPayload;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -54,11 +57,14 @@ public class EventService {
         return eventMapper.toDomain(savedEntity);
     }
 
+    @Cacheable(value = "events", key = "'id:' + #id")
     public Event getById(Long id) {
+        log.info("Запрос мероприятия по id: {}", id);
         var entity = getEntityByIdOrThrow(id);
         return eventMapper.toDomain(entity);
     }
 
+    @CacheEvict(value = "events", key = "'id:' + #eventId")
     @Transactional()
     public Event updateEvent(Long eventId, Event newDomain, TokenPayload currentUser) {
         log.info("Обновление мероприятия с id: {}", eventId);
@@ -115,6 +121,7 @@ public class EventService {
         return newEventDomain;
     }
 
+    @CacheEvict(value = "events", key = "'id:' + #eventId")
     @Transactional
     public void cancelEvent(Long eventId, TokenPayload currentUser) {
         log.info("Отмена мероприятия с id: {}", eventId);

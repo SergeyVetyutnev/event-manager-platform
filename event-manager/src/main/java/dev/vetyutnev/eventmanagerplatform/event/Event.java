@@ -1,5 +1,6 @@
 package dev.vetyutnev.eventmanagerplatform.event;
 
+import java.io.Serializable;
 import java.time.OffsetDateTime;
 
 public record Event(
@@ -13,5 +14,5 @@ public record Event(
         Integer duration,
         Long locationId,
         EventStatus status
-) {
+) implements Serializable {
 }

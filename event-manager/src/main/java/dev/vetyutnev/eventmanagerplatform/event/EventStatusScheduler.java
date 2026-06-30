@@ -6,6 +6,7 @@ import dev.vetyutnev.eventmanagerplatform.event.kafka.EventPublisherService;
 import dev.vetyutnev.eventmanagerplatform.event.registration.RegistrationRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.CacheManager;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,6 +23,7 @@ public class EventStatusScheduler {
     private final EventRepository eventRepository;
     private final RegistrationRepository registrationRepository;
     private final EventPublisherService eventPublisherService;
+    private final CacheManager cacheManager;
 
     @Transactional
     @Scheduled(cron = "${app.scheduling.check-statuses-cron}" )
@@ -49,7 +51,14 @@ public class EventStatusScheduler {
 
         List<EventEntity> events = eventRepository.findAllById(eventIds);
 
+        var eventCache = cacheManager.getCache("events");
+
         for (EventEntity event : events){
+
+            if(eventCache != null){
+                eventCache.evict("id:" + event.getId());
+            }
+
             List<Long> subscribers = registrationRepository.findUserIdsByEventId(event.getId());
 
             var changeItem = ChangeItem.builder()
