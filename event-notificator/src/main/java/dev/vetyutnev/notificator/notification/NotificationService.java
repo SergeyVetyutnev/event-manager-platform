@@ -10,8 +10,6 @@ import tools.jackson.core.JacksonException;
 import tools.jackson.core.type.TypeReference;
 import tools.jackson.databind.ObjectMapper;
 
-import java.lang.reflect.Type;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -22,6 +20,7 @@ import java.util.List;
 public class NotificationService {
 
     private final NotificationEntityRepository notificationEntityRepository;
+    private final NotificationCountService notificationCountService;
     private final ObjectMapper objectMapper;
 
     public List<Notification> getUnreadNotifications(TokenPayload currentUser) {
@@ -31,19 +30,20 @@ public class NotificationService {
 
         return entities.stream().map(entity -> {
             var payloadEntity = entity.getPayload();
-            String json = payloadEntity.getPayloadJson();
-
             List<ChangeItem> changes = Collections.emptyList();
 
-                if (payloadEntity != null && !json.isBlank()){
+            if (payloadEntity != null) {
+                String json = payloadEntity.getPayloadJson();
+                if (json != null && !json.isBlank()){
                     try {
                         changes = objectMapper.readValue(json, new TypeReference<List<ChangeItem>>() {});
                     } catch (JacksonException e) {
                         log.error("Ошибка парсинга JSON для payloadId = {}", payloadEntity.getId(), e);
                     }
                 }
+            }
 
-                var payloadDomain = new NotificationPayload(
+            var payloadDomain = new NotificationPayload(
                         payloadEntity.getMessageId(),
                         payloadEntity.getEventType(),
                         payloadEntity.getEventId(),
@@ -86,6 +86,6 @@ public class NotificationService {
 
         notificationEntityRepository.markAsRead(notificationIds, currentUser.userId());
 
-
+        notificationCountService.syncUnreadFromDatabase(currentUser.userId());
     }
 }
