@@ -1,9 +1,12 @@
 package dev.vetyutnev.notificator.kafka;
 
 import dev.vetyutnev.eventmanagerplatform.common.kafka.EventChangeKafkaMessage;
-import dev.vetyutnev.notificator.notification.*;
+import dev.vetyutnev.notificator.notification.repository.NotificationEntity;
+import dev.vetyutnev.notificator.notification.repository.NotificationEntityRepository;
+import dev.vetyutnev.notificator.notification.repository.NotificationEventPayloadEntity;
+import dev.vetyutnev.notificator.notification.repository.NotificationEventPayloadRepository;
+import dev.vetyutnev.notificator.notification.service.NotificationCountService;
 import lombok.RequiredArgsConstructor;
-import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

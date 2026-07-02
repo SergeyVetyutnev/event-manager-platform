@@ -5,8 +5,8 @@ import dev.vetyutnev.eventmanagerplatform.event.exception.EventNotFoundException
 import dev.vetyutnev.eventmanagerplatform.event.exception.EventValidationException;
 import dev.vetyutnev.eventmanagerplatform.event.registration.exception.RegistrationException;
 import dev.vetyutnev.eventmanagerplatform.location.exception.LocationNotFoundException;
-import dev.vetyutnev.eventmanagerplatform.location.exception.UserAlreadyExistsException;
-import dev.vetyutnev.eventmanagerplatform.location.exception.UserNotFoundException;
+import dev.vetyutnev.eventmanagerplatform.user.exception.UserAlreadyExistsException;
+import dev.vetyutnev.eventmanagerplatform.user.exception.UserNotFoundException;
 import dev.vetyutnev.eventmanagerplatform.security.exception.InvalidCredentialException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
