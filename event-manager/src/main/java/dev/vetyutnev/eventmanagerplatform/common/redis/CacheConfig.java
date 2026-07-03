@@ -13,9 +13,17 @@ import org.springframework.data.redis.serializer.RedisSerializationContext;
 import org.springframework.data.redis.serializer.RedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
+import java.time.Duration;
+
 @Slf4j
 @Configuration
 public class CacheConfig implements CachingConfigurer {
+
+    @Bean
+    public RedisCacheConfiguration cacheConfiguration(){
+      return RedisCacheConfiguration.defaultCacheConfig()
+              .entryTtl(Duration.ofHours(1));
+    };
 
     @Override
     public @Nullable CacheErrorHandler errorHandler() {
