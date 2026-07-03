@@ -1,5 +1,6 @@
 package dev.vetyutnev.eventmanagerplatform.security;
 
+import dev.vetyutnev.eventmanagerplatform.security.filter.JwtAuthenticationFilter;
 import dev.vetyutnev.eventmanagerplatform.security.handler.CustomAccessDeniedHandler;
 import dev.vetyutnev.eventmanagerplatform.security.handler.CustomAuthenticationEntryPoint;
 import lombok.RequiredArgsConstructor;
@@ -12,7 +13,6 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 

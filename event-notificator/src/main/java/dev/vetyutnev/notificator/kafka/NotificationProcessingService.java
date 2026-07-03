@@ -1,12 +1,12 @@
 package dev.vetyutnev.notificator.kafka;
 
 import dev.vetyutnev.eventmanagerplatform.common.kafka.EventChangeKafkaMessage;
-import dev.vetyutnev.notificator.notification.NotificationEntity;
-import dev.vetyutnev.notificator.notification.NotificationEntityRepository;
-import dev.vetyutnev.notificator.notification.NotificationEventPayloadEntity;
-import dev.vetyutnev.notificator.notification.NotificationEventPayloadRepository;
+import dev.vetyutnev.notificator.notification.repository.NotificationEntity;
+import dev.vetyutnev.notificator.notification.repository.NotificationEntityRepository;
+import dev.vetyutnev.notificator.notification.repository.NotificationEventPayloadEntity;
+import dev.vetyutnev.notificator.notification.repository.NotificationEventPayloadRepository;
+import dev.vetyutnev.notificator.notification.service.NotificationCountService;
 import lombok.RequiredArgsConstructor;
-import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,6 +27,7 @@ public class NotificationProcessingService {
     private final ObjectMapper objectMapper;
     private final NotificationEventPayloadRepository notificationEventPayloadRepository;
     private final NotificationEntityRepository notificationEntityRepository;
+    private final NotificationCountService notificationCountService;
 
     @Transactional
     public void processMessage(EventChangeKafkaMessage message){
@@ -76,6 +77,11 @@ public class NotificationProcessingService {
 
             log.info("Сообщение успешно обработано (messageId={}, subscribersCount={})",
                     message.messageId(), message.subscribers().size());
+
+            for (Long subscriber : subscribers){
+                notificationCountService.incrementUnread(subscriber);
+            }
+
         } else {
             log.info("Сообщение обработано, но у события нет подписчиков (messageId={})",
                     message.messageId());

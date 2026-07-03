@@ -1,9 +1,9 @@
 package dev.vetyutnev.eventmanagerplatform.event.kafka;
 
 import dev.vetyutnev.eventmanagerplatform.common.kafka.EventChangeKafkaMessage;
-import dev.vetyutnev.eventmanagerplatform.event.outbox.OutBoxMessageRepository;
-import dev.vetyutnev.eventmanagerplatform.event.outbox.OutboxMessageEntity;
-import dev.vetyutnev.eventmanagerplatform.event.outbox.OutboxStatus;
+import dev.vetyutnev.eventmanagerplatform.event.outbox.repository.OutBoxMessageRepository;
+import dev.vetyutnev.eventmanagerplatform.event.outbox.repository.OutboxMessageEntity;
+import dev.vetyutnev.eventmanagerplatform.event.outbox.domain.OutboxStatus;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
